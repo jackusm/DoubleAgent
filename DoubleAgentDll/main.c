@@ -13,7 +13,6 @@ static BOOL main_DllMainProcessAttach(VOID);
  * The event handler for DLL detach events
  */
 static BOOL main_DllMainProcessDetach(VOID);
-
 /* Function Definitions ******************************************************/
 BOOL WINAPI DllMain(IN HINSTANCE hInstDLL, IN SIZE_T nReason, IN PVOID pvReserved)
 {
@@ -24,7 +23,6 @@ BOOL WINAPI DllMain(IN HINSTANCE hInstDLL, IN SIZE_T nReason, IN PVOID pvReserve
 	{
 		return VERIFIERDLL_DllMainProcessVerifier(pvReserved);
 	}
-
 	else if (DLL_PROCESS_ATTACH == nReason)
 	{
 		return main_DllMainProcessAttach();
@@ -66,14 +64,18 @@ static BOOL main_DllMainProcessAttach(VOID)
 	 * The sample code below uses kernel32.dll and therefore may cause undefined behavior on some operating systems
 	 * This specific code has been tested and found working on Windows 10 x64 but fails on Windows 7 x64
 	 */
-	 //eStatus = PROCESS_Create(L"C:\\Windows\\System32\\cmd.exe");
-	 //if (FALSE == DOUBLEAGENT_SUCCESS(eStatus))
-	 //{
-	 //	goto lbl_cleanup;
-	 //}
+	 eStatus = PROCESS_Create(L"C:\\Windows\\System32\\cmd.exe");
+	 if (FALSE == DOUBLEAGENT_SUCCESS(eStatus))
+	 {
+	 	/* Failed */
+	        DOUBLEAGENT_SET(eStatus, DOUBLEAGENT_STATUS_DOUBLEAGENTDLL_PROCESS_CREATE_CREATEPROCESSW_FAILED);
+	 }
+	 else
+	 {
+		/* Succeeded */
+	        DOUBLEAGENT_SET(eStatus, DOUBLEAGENT_STATUS_SUCCESS);
+	 }
 
-	 /* Succeeded */
-	DOUBLEAGENT_SET(eStatus, DOUBLEAGENT_STATUS_SUCCESS);
 
 	//lbl_cleanup:
 	/* Returns status */
