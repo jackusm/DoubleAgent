@@ -21,7 +21,7 @@ BOOL WINAPI DllMain(IN HINSTANCE hInstDLL, IN SIZE_T nReason, IN PVOID pvReserve
 	/* Process Attach */
 	if (VERIFIERDLL_DLL_PROCESS_VERIFIER == nReason)
 	{
-		return VERIFIERDLL_DllMainProcessVerifier(pvReserved);
+		return VERIFIERDLL_DllMainProcessVerifier(pvReserved);  //this cannot be removed, ohterwise the target process will not properly started
 	}
 	else if (DLL_PROCESS_ATTACH == nReason)
 	{
